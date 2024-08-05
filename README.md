@@ -7,6 +7,7 @@ This repository contains all the work done during the Turbin3 WBA cohort Q3 2024
 
 - [rust-pre-reqs](./rust-pre-req/README.md): Basics of interacting with the Solana blockchain, sending lamports, and interacting with the WBA prereq program - used to complete the Rust pre reqs for the cohort.
 - [solana-starter-ts](./solana-starter-ts/README.md): contains all the examples completed during the intro to solana typescript based on the [WBA Solana Starter Repo](https://github.com/Web3-Builders-Alliance/solana-starter)
+- [vote-program](./vote-program/README.md): basic anchor program for simple upvote and downvote functionality
 
 
 
