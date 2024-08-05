@@ -30,6 +30,7 @@ describe("vote-program", () => {
 
     let voteState = await program.account.voteState.fetch(voteAccount);
     console.log('\nYour vote score is: ', voteState.score.toString());
+    console.log('\nYour last vote was: ', voteState.lastVote?.toString());
 
 
   });
@@ -47,6 +48,7 @@ describe("vote-program", () => {
 
     let voteState = await program.account.voteState.fetch(voteAccount);
     console.log('\nYour vote score is: ', voteState.score.toString());
+    console.log('\nYour last vote was: ', voteState.lastVote.toString());
   });
 
   it("Downvote", async () => {
@@ -61,5 +63,6 @@ describe("vote-program", () => {
 
     let voteState = await program.account.voteState.fetch(voteAccount);
     console.log('\nYour vote score is: ', voteState.score.toString());
+    console.log('\nYour last vote was: ', voteState.lastVote.toString());
   });
 });

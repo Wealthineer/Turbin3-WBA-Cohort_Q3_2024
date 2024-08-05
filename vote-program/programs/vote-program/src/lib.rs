@@ -42,6 +42,7 @@ pub struct Initialize<'info> {
 impl<'info> Initialize<'info> {
     pub fn initialize(&mut self, bumps: &InitializeBumps) -> Result<()> {
         self.vote_account.score = 0;
+        self.vote_account.last_vote = None;
         self.vote_account.bump = bumps.vote_account;
         Ok(())
     }
@@ -64,11 +65,13 @@ pub struct Vote<'info> {
 impl<'info> Vote<'info> {
     pub fn upvote(&mut self) -> Result<()> {
         self.vote_account.score += 1;
+        self.vote_account.last_vote = Some(self.payer.key());
         Ok(())
     }
 
     pub fn downvote(&mut self) -> Result<()> {
         self.vote_account.score -= 1;
+        self.vote_account.last_vote = Some(self.payer.key());
         Ok(())
     }
 }
@@ -77,8 +80,9 @@ impl<'info> Vote<'info> {
 pub struct VoteState {
     pub score: i64,
     pub bump: u8,
+    pub last_vote: Option<Pubkey>
 }
 
 impl Space for VoteState {
-    const INIT_SPACE: usize = 8 + 8 + 1;
+    const INIT_SPACE: usize = 8 + 8 + 33 + 1;
 }
