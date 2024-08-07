@@ -1,13 +1,13 @@
 import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
-import { AnchorVaultQ3 } from "../target/types/anchor_vault_q3";
+import { AnchorVault } from "../target/types/anchor_vault";
 
 describe("anchor-vault-q3", () => {
   // Configure the client to use the local cluster.
   const provider = anchor.AnchorProvider.env()
   anchor.setProvider(provider);
 
-  const program = anchor.workspace.AnchorVaultQ3 as Program<AnchorVaultQ3>;
+  const program = anchor.workspace.AnchorVault as Program<AnchorVault>;
 
 
   const vaultState = anchor.web3.PublicKey.findProgramAddressSync([Buffer.from("state"), provider.publicKey.toBytes()], program.programId)[0];

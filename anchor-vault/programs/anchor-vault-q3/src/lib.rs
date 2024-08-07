@@ -1,9 +1,9 @@
 use anchor_lang::{prelude::*, system_program::{transfer, Transfer}};
 
-declare_id!("DbyySKpQp2VWmPsts6rjTmmixLAycjYiKWMiUhfbk1jg");
+declare_id!("G42L3gt2LBj61ErHqVoqSgW8PMkPJUSLHPLWkeexWEWG");
 
 #[program]
-pub mod anchor_vault_q3 {
+pub mod anchor_vault {
     use super::*;
 
     pub fn initialize(ctx: Context<Initialize>) -> Result<()> {

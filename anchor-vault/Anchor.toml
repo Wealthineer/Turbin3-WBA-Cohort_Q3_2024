@@ -5,7 +5,7 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-anchor_vault_q3 = "DbyySKpQp2VWmPsts6rjTmmixLAycjYiKWMiUhfbk1jg"
+anchor_vault = "G42L3gt2LBj61ErHqVoqSgW8PMkPJUSLHPLWkeexWEWG"
 
 [registry]
 url = "https://api.apr.dev"
