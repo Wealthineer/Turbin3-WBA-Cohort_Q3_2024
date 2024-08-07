@@ -2,7 +2,7 @@ mod programs;
 
 #[cfg(test)]
 mod tests {
-    use crate::programs::wba_prereq::{CompleteArgs, UpdateArgs, WbaPrereqProgram};
+    use crate::programs::wba_prereq::{CompleteArgs, WbaPrereqProgram};
     use bs58;
     use dotenv::dotenv;
     use solana_client::rpc_client::RpcClient;
