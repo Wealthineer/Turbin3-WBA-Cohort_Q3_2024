@@ -9,6 +9,7 @@ This repository contains all the work done during the Turbin3 WBA cohort Q3 2024
 - [solana-starter-ts](./solana-starter-ts/README.md): contains all the examples completed during the intro to solana typescript based on the [WBA Solana Starter Repo](https://github.com/Web3-Builders-Alliance/solana-starter)
 - [vote-program](./vote-program/README.md): basic anchor program for simple upvote and downvote functionality
 - [anchor-vault](./anchor-vault/README.md): basic anchor program for depositing and withdrawing SOL
+- [escrow](./escrow/README.md):  a program that facilitates a secure exchange of spl tokens between two parties that do not need to trust each other
 
 
 

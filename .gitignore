@@ -3,3 +3,7 @@ node_modules
 target
 .DS_Store
 ts/.yarn/install-state.gz
+.avm/**
+.cache/**
+.cargo/**
+
