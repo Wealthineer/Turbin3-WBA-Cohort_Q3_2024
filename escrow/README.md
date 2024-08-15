@@ -23,3 +23,12 @@ solana-test-validator --reset
 anchor test --skip-local-validator
 ```
 
+## What to expect
+The test cases go through the following scenarios:
+- Setting up Sol for maker & taker (`Airdrop`)
+- Create mints, tokens and ATAs for the following test (`Create mints, tokens and ATAs`)
+- Open an escrow by the maker (`Make`)
+- Take the escrow previously opened by the taker, transferring tokens to the maker and closing the vaul in the process (`Take`)
+- Make sure the transaction fails if the maker does not have enough tokens to deposit into the escrow (`Make fails when not enough tokens are available`)
+- Open another escrow (`Make 2`)
+- Refund the escrow by the maker, closing the vault in the process (`Refund`)

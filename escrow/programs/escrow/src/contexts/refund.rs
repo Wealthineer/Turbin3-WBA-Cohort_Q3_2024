@@ -30,7 +30,7 @@ pub struct Refund<'info> {
     #[account(
         mut,
         associated_token::mint = mint_a,
-        associated_token::authority = maker,
+        associated_token::authority = escrow,
         associated_token::token_program = token_program
     )]
     vault: InterfaceAccount<'info, TokenAccount>,
@@ -48,7 +48,7 @@ impl<'info> Refund<'info> {
             to: self.maker_ata_a.to_account_info(),
             mint:  self.mint_a.to_account_info(),
             from: self.vault.to_account_info(),
-            authority: self.maker.to_account_info(),
+            authority: self.escrow.to_account_info(),
         };
         
         let ctx = CpiContext::new_with_signer(
