@@ -2,7 +2,6 @@
 
 This repository contains all the work done during the Turbin3 WBA cohort Q3 2024. Projects will be added while cohort continues.
 
-
 ## Project Folders
 
 - [rust-pre-reqs](./rust-pre-req/README.md): Basics of interacting with the Solana blockchain, sending lamports, and interacting with the WBA prereq program - used to complete the Rust pre reqs for the cohort.
@@ -10,9 +9,7 @@ This repository contains all the work done during the Turbin3 WBA cohort Q3 2024
 - [vote-program](./vote-program/README.md): basic anchor program for simple upvote and downvote functionality
 - [anchor-vault](./anchor-vault/README.md): basic anchor program for depositing and withdrawing SOL
 - [escrow](./escrow/README.md):  a program that facilitates a secure exchange of spl tokens between two parties that do not need to trust each other
-
-
-
+- [nft-staking](./nft-staking/README.md): a program to stake an NFT by freezing it in the users wallet and enable the user to claim tokens depending on how long the NFT was staked.
 
 ## Acknowledgments
 
