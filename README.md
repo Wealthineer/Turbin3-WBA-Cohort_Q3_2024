@@ -2,6 +2,19 @@
 
 This repository contains all the work done during the Turbin3 WBA cohort Q3 2024. Projects will be added while cohort continues.
 
+## Cap Stone project
+
+This is the project that will be designed from scratch by the participant to complete the cohort.
+Starting with an idea, moving this forward to user stories, then an architectural diagram and finally the implementation.
+
+I will focus on a peer to peer price betting platform.
+
+User stories:
+- [User stories](./price-betting/docs/user-stories.md)
+- [Architectural diagram](./price-betting/docs/arch-diagram_price-bets.png)
+
+
+
 ## Project Folders
 
 - [rust-pre-reqs](./rust-pre-req/README.md): Basics of interacting with the Solana blockchain, sending lamports, and interacting with the WBA prereq program - used to complete the Rust pre reqs for the cohort.
