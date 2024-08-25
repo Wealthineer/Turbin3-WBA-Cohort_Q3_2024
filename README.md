@@ -11,6 +11,7 @@ This repository contains all the work done during the Turbin3 WBA cohort Q3 2024
 - [escrow](./escrow/README.md):  a program that facilitates a secure exchange of spl tokens between two parties that do not need to trust each other
 - [nft-staking](./nft-staking/README.md): a program to stake an NFT by freezing it in the users wallet and enable the user to claim tokens depending on how long the NFT was staked.
 - [nft-marketplace](./nft-marketplace/README.md): a simple marketplace for NFTs built with Anchor.
+- [dice-game](./dice-game/README.md): a simple dice game built with Anchor. Signature hashes in combination with slots are used for randomness.
 
 ## Acknowledgments
 
