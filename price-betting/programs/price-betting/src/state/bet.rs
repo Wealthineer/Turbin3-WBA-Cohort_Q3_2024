@@ -10,6 +10,7 @@ pub struct Bet {
     pub resolver_feed: Pubkey,
     pub winner: Option<Pubkey>,
     pub bet_seed: u64,
+    pub pool_bump: u8,
     pub bump: u8,
 }
 

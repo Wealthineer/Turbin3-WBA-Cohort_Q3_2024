@@ -41,6 +41,7 @@ impl<'info> Create<'info> {
             resolver_feed,
             winner: None,
             bet_seed,
+            pool_bump: bumps.betting_pool,
             bump: bumps.bet,
         });
         Ok(())

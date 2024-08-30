@@ -25,9 +25,9 @@ pub mod price_betting {
     //     Ok(())
     // }
 
-    // pub fn cancel_bet(ctx: Context<Cancel>) -> Result<()> {
-    //     Ok(())
-    // }
+    pub fn cancel_bet(ctx: Context<Cancel>, bet_seed: u64) -> Result<()> {
+        ctx.accounts.withdraw_wager(bet_seed)
+    }
 
     // pub fn resolve_bet(ctx: Context<Resolve>) -> Result<()> {
     //     Ok(())

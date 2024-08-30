@@ -36,14 +36,6 @@ describe("price-betting", () => {
   const bettingPool = PublicKey.findProgramAddressSync([Buffer.from("betting_pool"), bet.toBuffer()], program.programId)[0];
   console.log("Betting Pool", bettingPool.toBase58());
 
-  const accounts = {
-    betCreator: betCreator.publicKey,
-    betProgram: betProgram,
-    bet: bet,
-    bettingPool: bettingPool,
-    systemProgram: SystemProgram.programId,
-  }
-
   
 
   it("Airdrop", async () => {
@@ -65,7 +57,7 @@ describe("price-betting", () => {
   });
 
   it("Create Bet", async () => {
-    const tx = await program.methods.createBet(betSeed, openUntil, resolveDate, pricePrediction, true, new PublicKey(""), amount).accountsPartial({
+    const tx = await program.methods.createBet(betSeed, openUntil, resolveDate, pricePrediction, true, new PublicKey("BSzfJs4d1tAkSDqkepnfzEVcx2WtDVnwwXa2giy9PLeP"), amount).accountsPartial({
       betCreator: betCreator.publicKey,
       betProgram: betProgram,
       bet: bet,
@@ -75,6 +67,20 @@ describe("price-betting", () => {
     .signers([betCreator])
     .rpc();
     console.log("Your transaction signature", tx);
+  });
+
+  it("Cancel Bet", async () => {
+      const tx = await program.methods.cancelBet(betSeed).accountsPartial({
+        betCreator: betCreator.publicKey,
+        betProgram: betProgram,
+        bet: bet,
+        bettingPool: bettingPool,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([betCreator])
+      .rpc();
+      console.log("Your transaction signature", tx);
+
   });
 });
 // Helpers
