@@ -13,7 +13,7 @@ describe("price-betting", () => {
 
   const program = anchor.workspace.PriceBetting as Program<PriceBetting>;
 
-  const initSeed = new anchor.BN(0);
+  const initSeed = new anchor.BN(123);
   const betSeed = new anchor.BN(999);
   const openUntil = new anchor.BN(Date.now() + 1000 * 60);
   const resolveDate = new anchor.BN(Date.now() + 1000 * 60 * 3);
@@ -109,8 +109,19 @@ describe("price-betting", () => {
     .signers([betTaker])
     .rpc();
     console.log("Your transaction signature", tx);
+  });
 
-});
+  it("Withdraw from treasury", async () => {
+    const tx = await program.methods.withdrawFromTreasury(initSeed).accountsPartial({
+      admin: admin.publicKey,
+      betProgram: betProgram,
+      treasury: treasury,
+      systemProgram: SystemProgram.programId,
+    })
+    .signers([admin])
+    .rpc();
+    console.log("Your transaction signature", tx);
+  });
 });
 
 

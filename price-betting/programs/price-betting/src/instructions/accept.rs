@@ -34,7 +34,7 @@ pub struct Accept<'info> {
     #[account(
         mut,
         seeds = [b"treasury", bet_program.key().as_ref()],
-        bump,
+        bump = bet_program.treasury_bump,
     )]
     pub treasury: SystemAccount<'info>,
 
@@ -50,8 +50,7 @@ impl<'info> Accept<'info> {
         Ok(())
     }
 
-    pub fn deposit_wager(&mut self, bet_seed: u64) -> Result<()> {
-        let _ = bet_seed; //we need bet seed to derive the right bet pda - but only in the accounts
+    pub fn deposit_wager(&mut self) -> Result<()> {
         let amount = self.betting_pool.lamports(); //TODO: If we ever want to not just match the amount the bet_creator put in, we need to change this to add that value to bet struct and take it from there
 
         let transfer_accounts = Transfer {

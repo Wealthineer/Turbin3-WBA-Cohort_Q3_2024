@@ -6,4 +6,14 @@ pub enum PriceBettingError {
     BetNoLongerAvailable,
     #[msg("Bet already accepted")]
     BetAlreadyAccepted,
+    #[msg("Bet already resolved")]
+    BetAlreadyResolved,
+    #[msg("Bet has not been accepted yet")]
+    BetNotAccepted,
+    #[msg("Resolve date has not been reached yet")]
+    ResolveDateNotReached,
+    #[msg("Bet has not been resolved yet")]
+    BetNotResolved,
+    #[msg("Unauthorized")]
+    Unauthorized,
 }

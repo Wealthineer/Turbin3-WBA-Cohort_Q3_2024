@@ -24,8 +24,9 @@ pub mod price_betting {
     }
 
     pub fn accept_bet(ctx: Context<Accept>, bet_seed: u64) -> Result<()> {
+        let _ = bet_seed; //seed only used for account derivation
         ctx.accounts.validate()?;
-        ctx.accounts.deposit_wager(bet_seed)?;
+        ctx.accounts.deposit_wager()?;
         ctx.accounts.set_bet_taker()?;
         ctx.accounts.pay_protocol_fee()
     }
@@ -35,12 +36,19 @@ pub mod price_betting {
         ctx.accounts.withdraw_wager(bet_seed)
     }
 
-    // pub fn resolve_bet(ctx: Context<Resolve>) -> Result<()> {
-    //     Ok(())
-    // }
+    pub fn resolve_bet(ctx: Context<Resolve>) -> Result<()> {
+        ctx.accounts.validate()?;
+        ctx.accounts.resolve_bet_dummy_impl() //TODO: replace resolve with an actual switchboard implementation
+    }
 
     // pub fn claim_bet(ctx: Context<Claim>) -> Result<()> {
     //     Ok(())
     // }
+
+    pub fn withdraw_from_treasury(ctx: Context<Withdraw>, seed: u64) -> Result<()> {
+        let _ = seed; //seed only used for account derivation
+        ctx.accounts.validate()?;
+        ctx.accounts.withdraw_from_treasury()
+    }
 }
 
