@@ -82,7 +82,41 @@ describe("price-betting", () => {
       console.log("Your transaction signature", tx);
 
   });
+
+  it("Create Bet 2", async () => {
+    const tx = await program.methods.createBet(betSeed, openUntil, resolveDate, pricePrediction, true, new PublicKey("BSzfJs4d1tAkSDqkepnfzEVcx2WtDVnwwXa2giy9PLeP"), amount).accountsPartial({
+      betCreator: betCreator.publicKey,
+      betProgram: betProgram,
+      bet: bet,
+      bettingPool: bettingPool,
+      systemProgram: SystemProgram.programId,
+    })
+    .signers([betCreator])
+    .rpc();
+    console.log("Your transaction signature", tx);
+  });
+
+  it("Accept Bet 2", async () => {
+    const tx = await program.methods.acceptBet(betSeed).accountsPartial({
+      betTaker: betTaker.publicKey,
+      betCreator: betCreator.publicKey,
+      betProgram: betProgram,
+      bet: bet,
+      bettingPool: bettingPool,
+      treasury: treasury,
+      systemProgram: SystemProgram.programId,
+    })
+    .signers([betTaker])
+    .rpc();
+    console.log("Your transaction signature", tx);
+
 });
+});
+
+
+
+
+
 // Helpers
 const confirmTx = async (signature: string) => {
   const latestBlockhash = await anchor.getProvider().connection.getLatestBlockhash();

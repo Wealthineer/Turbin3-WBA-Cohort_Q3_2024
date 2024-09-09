@@ -6,6 +6,8 @@ pub use state::*;
 pub mod instructions;
 pub use instructions::*;
 
+pub mod error;
+
 declare_id!("5RoVruk757C3LWt6ZVXajctxrqTDdGJEEmH1sh5qDTPL");
 
 #[program]
@@ -21,11 +23,15 @@ pub mod price_betting {
         ctx.accounts.deposit_wager(amount)
     }
 
-    // pub fn accept_bet(ctx: Context<Accept>) -> Result<()> {
-    //     Ok(())
-    // }
+    pub fn accept_bet(ctx: Context<Accept>, bet_seed: u64) -> Result<()> {
+        ctx.accounts.validate()?;
+        ctx.accounts.deposit_wager(bet_seed)?;
+        ctx.accounts.set_bet_taker()?;
+        ctx.accounts.pay_protocol_fee()
+    }
 
     pub fn cancel_bet(ctx: Context<Cancel>, bet_seed: u64) -> Result<()> {
+        ctx.accounts.validate()?;
         ctx.accounts.withdraw_wager(bet_seed)
     }
 

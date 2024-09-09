@@ -1,6 +1,6 @@
 use anchor_lang::{prelude::*, system_program::{transfer, Transfer}};
 
-use crate::{state::program::BetProgram, Bet};
+use crate::{state::program::BetProgram, Bet, error::PriceBettingError};
 
 #[derive(Accounts)]
 #[instruction(bet_seed: u64)]
@@ -30,6 +30,12 @@ pub struct Cancel<'info> {
 }
 
 impl<'info> Cancel<'info> {
+
+    pub fn validate(&mut self) -> Result<()> {
+        require!(self.bet.taker.is_none(), PriceBettingError::BetAlreadyAccepted);
+        Ok(())
+    }
+
     pub fn withdraw_wager(&mut self, bet_seed: u64) -> Result<()> {
         let _ = bet_seed; //we need bet seed to derive the right bet pda - but not here
         let amount = self.betting_pool.lamports();
