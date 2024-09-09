@@ -2,6 +2,7 @@ import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import { PriceBetting } from "../target/types/price_betting";
 import { Keypair, SystemProgram, PublicKey, Commitment } from "@solana/web3.js";
+import { assert } from "chai";
 
 const commitment: Commitment = "confirmed";
 
@@ -54,9 +55,25 @@ describe("price-betting", () => {
     .signers([admin])
     .rpc();
     console.log("Your transaction signature", tx);
+
+    await confirmTx(tx)
+
+    const initializedBetProgram = await program.account.betProgram.fetch(betProgram)
+
+    assert.equal(initializedBetProgram.admin.toBase58(), admin.publicKey.toBase58())
+    assert.equal(initializedBetProgram.treasury.toBase58(), treasury.toBase58())
+    assert.equal(initializedBetProgram.seed.toString(), initSeed.toString())
+    assert.equal(initializedBetProgram.fees, fees)
+
+
+
+
   });
 
   it("Create Bet", async () => {
+
+    const creatorBalanceBefore = await connection.getBalance(betCreator.publicKey)
+
     const tx = await program.methods.createBet(betSeed, openUntil, resolveDate, pricePrediction, true, new PublicKey("BSzfJs4d1tAkSDqkepnfzEVcx2WtDVnwwXa2giy9PLeP"), amount).accountsPartial({
       betCreator: betCreator.publicKey,
       betProgram: betProgram,
@@ -67,9 +84,30 @@ describe("price-betting", () => {
     .signers([betCreator])
     .rpc();
     console.log("Your transaction signature", tx);
+
+    await confirmTx(tx)
+
+    const initializedBet = await program.account.bet.fetch(bet)
+
+    const poolBalance = await connection.getBalance(bettingPool)
+    const creatorBalanceAfter = await connection.getBalance(betCreator.publicKey)
+
+    assert.equal(poolBalance, amount.toNumber())
+    assert.isAtMost(creatorBalanceAfter, creatorBalanceBefore - poolBalance) //tx costs get ignored on local validator but rent for bet does not
+
+    assert.equal(initializedBet.winner, null)
+    assert.equal(initializedBet.openUntil.toString(), openUntil.toString())
+    assert.equal(initializedBet.taker, null)
+    assert.equal(initializedBet.pricePrediction.toString(), pricePrediction.toString())
+    assert.equal(initializedBet.directionCreator, true)
+    assert.equal(initializedBet.resolverFeed.toBase58(), new PublicKey("BSzfJs4d1tAkSDqkepnfzEVcx2WtDVnwwXa2giy9PLeP").toBase58())
+    assert.equal(initializedBet.betSeed.toString(), betSeed.toString())
   });
 
   it("Cancel Bet", async () => {
+    const poolBalanceBefore = await connection.getBalance(bettingPool)
+    const creatorBalanceBefore = await connection.getBalance(betCreator.publicKey)
+
       const tx = await program.methods.cancelBet(betSeed).accountsPartial({
         betCreator: betCreator.publicKey,
         betProgram: betProgram,
@@ -81,9 +119,26 @@ describe("price-betting", () => {
       .rpc();
       console.log("Your transaction signature", tx);
 
+      await confirmTx(tx)
+
+      try {
+        const initializedBet = await program.account.bet.fetch(bet)
+        assert.fail("Bet should not exist")
+      } catch (e) {
+        assert.isTrue(e.message.includes("Account does not exist or has no data"))
+      }
+
+      const poolBalanceAfter = await connection.getBalance(bettingPool)
+      const creatorBalanceAfter = await connection.getBalance(betCreator.publicKey)
+
+      assert.equal(poolBalanceAfter, 0)
+      assert.equal(creatorBalanceAfter, 100 * anchor.web3.LAMPORTS_PER_SOL) //since gas costs get ignored, we expect to be back to the starting balance after the rent and the wager are returned
+
   });
 
   it("Create Bet 2", async () => {
+
+    const creatorBalanceBefore = await connection.getBalance(betCreator.publicKey)
     const tx = await program.methods.createBet(betSeed, openUntil, resolveDate, pricePrediction, true, new PublicKey("BSzfJs4d1tAkSDqkepnfzEVcx2WtDVnwwXa2giy9PLeP"), amount).accountsPartial({
       betCreator: betCreator.publicKey,
       betProgram: betProgram,
@@ -94,9 +149,28 @@ describe("price-betting", () => {
     .signers([betCreator])
     .rpc();
     console.log("Your transaction signature", tx);
+
+    await confirmTx(tx)
+
+    const initializedBet = await program.account.bet.fetch(bet)
+
+    const poolBalance = await connection.getBalance(bettingPool)
+    const creatorBalanceAfter = await connection.getBalance(betCreator.publicKey)
+
+    assert.equal(poolBalance, amount.toNumber())
+    assert.isAtMost(creatorBalanceAfter, creatorBalanceBefore - poolBalance) //tx costs get ignored on local validator
+
+    assert.equal(initializedBet.winner, null)
+    assert.equal(initializedBet.openUntil.toString(), openUntil.toString())
+    assert.equal(initializedBet.taker, null)
+    assert.equal(initializedBet.pricePrediction.toString(), pricePrediction.toString())
+    assert.equal(initializedBet.directionCreator, true)
+    assert.equal(initializedBet.resolverFeed.toBase58(), new PublicKey("BSzfJs4d1tAkSDqkepnfzEVcx2WtDVnwwXa2giy9PLeP").toBase58())
+    assert.equal(initializedBet.betSeed.toString(), betSeed.toString())
   });
 
   it("Accept Bet 2", async () => {
+    const takerBalanceBefore = await connection.getBalance(betTaker.publicKey)
     const tx = await program.methods.acceptBet(betSeed).accountsPartial({
       betTaker: betTaker.publicKey,
       betCreator: betCreator.publicKey,
@@ -109,9 +183,26 @@ describe("price-betting", () => {
     .signers([betTaker])
     .rpc();
     console.log("Your transaction signature", tx);
+
+    await confirmTx(tx)
+
+    const poolBalance = await connection.getBalance(bettingPool)
+    const takerBalanceAfter = await connection.getBalance(betTaker.publicKey)
+    const treasuryBalanceAfter = await connection.getBalance(treasury)
+
+    const acceptedBet = await program.account.bet.fetch(bet)
+
+    assert.equal(acceptedBet.taker.toBase58(), betTaker.publicKey.toBase58())
+
+    assert.equal(takerBalanceAfter, takerBalanceBefore - amount.toNumber()) //tx costs get ignored on local validator
+    assert.equal(poolBalance, (2 * amount.toNumber()) * (1 - (fees / 10000))) //fees are deducted from the pool after taker has paid their part
+    assert.equal(treasuryBalanceAfter, (2 * amount.toNumber()) * (fees / 10000))
   });
 
   it("Withdraw from treasury", async () => {
+
+    const treasuryBalanceBefore = await connection.getBalance(treasury)
+
     const tx = await program.methods.withdrawFromTreasury(initSeed).accountsPartial({
       admin: admin.publicKey,
       betProgram: betProgram,
@@ -121,6 +212,64 @@ describe("price-betting", () => {
     .signers([admin])
     .rpc();
     console.log("Your transaction signature", tx);
+
+    await confirmTx(tx)
+
+    const treasuryBalanceAfter = await connection.getBalance(treasury)
+
+    assert.isAbove(treasuryBalanceBefore, 0)
+    assert.equal(treasuryBalanceAfter, 0)
+  });
+
+                     
+
+  it("Resolve (just dummy impl)", async () => {
+    const tx = await program.methods.resolveBet(betSeed).accountsPartial({
+      resolver: betCreator.publicKey,
+      betCreator: betCreator.publicKey,
+      betProgram: betProgram,
+      bet: bet,
+    })
+    .signers([betCreator])
+    .rpc();
+    console.log("Your transaction signature", tx);
+
+    await confirmTx(tx)
+
+  });
+
+  it("Claim Winnings", async () => {
+
+    const bettingPoolBalanceBefore = await connection.getBalance(bettingPool)
+
+    const tx = await program.methods.claimBet(betSeed).accountsPartial({
+      claimer: betCreator.publicKey, //claim as bet creator since the dummy resolver always resolves to the bet creator
+      betCreator: betCreator.publicKey,
+      betProgram: betProgram,
+      bet: bet,
+      bettingPool: bettingPool,
+      systemProgram: SystemProgram.programId,
+    })
+    .signers([betCreator])
+    .rpc();
+    console.log("Your transaction signature", tx);
+
+    await confirmTx(tx)
+
+    const claimerBalanceAfter = await connection.getBalance(betCreator.publicKey)
+    const bettingPoolBalanceAfter = await connection.getBalance(bettingPool)
+
+    assert.equal(claimerBalanceAfter, 100 * anchor.web3.LAMPORTS_PER_SOL - amount.toNumber() + bettingPoolBalanceBefore) //starting balance minus the bet amount plus the pool balance before the claim
+    assert.equal(bettingPoolBalanceAfter, 0) //the pool is empty after the claim
+
+    try {
+      const claimedBet = await program.account.bet.fetch(bet)
+      assert.fail("Bet should be closed after claim")
+    } catch (e) {
+      assert.isTrue(e.message.includes("Account does not exist or has no data"))
+    }
+
+
   });
 });
 

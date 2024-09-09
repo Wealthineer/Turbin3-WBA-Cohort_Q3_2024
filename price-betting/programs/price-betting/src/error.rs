@@ -16,4 +16,6 @@ pub enum PriceBettingError {
     BetNotResolved,
     #[msg("Unauthorized")]
     Unauthorized,
+    #[msg("Only winner can claim")]
+    OnlyWinnerCanClaim,
 }
