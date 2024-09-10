@@ -36,10 +36,17 @@ pub mod price_betting {
         ctx.accounts.withdraw_wager(bet_seed)
     }
 
-    pub fn resolve_bet(ctx: Context<Resolve>, bet_seed: u64) -> Result<()> {
+    pub fn resolve_bet_local_test_dummy(ctx: Context<Resolve>, bet_seed: u64) -> Result<()> {
         let _ = bet_seed; //seed only used for account derivation
         // ctx.accounts.validate()?; //TODO: activate validations once actual resolver is implemented
         ctx.accounts.resolve_bet_dummy_impl() //TODO: replace resolve with an actual switchboard implementation
+    }
+
+    //this only works if the 
+    pub fn resolve_bet_wihtout_update(ctx: Context<Resolve>, bet_seed: u64) -> Result<()> {
+        let _ = bet_seed; //seed only used for account derivation
+        ctx.accounts.validate()?; //TODO: activate validations once actual resolver is implemented
+        ctx.accounts.resolve_bet_switchboard_impl() //TODO: replace resolve with an actual switchboard implementation
     }
 
     pub fn claim_bet(ctx: Context<Claim>, bet_seed: u64) -> Result<()> {

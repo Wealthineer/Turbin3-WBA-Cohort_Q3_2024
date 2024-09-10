@@ -5,7 +5,7 @@ pub struct Bet {
     pub taker: Option<Pubkey>,
     pub open_until: u64,
     pub resolve_date: u64,
-    pub price_prediction: u64,
+    pub price_prediction: u64, //price prediction times 10^10
     pub direction_creator: bool,
     pub resolver_feed: Pubkey,
     pub winner: Option<Pubkey>,

@@ -18,4 +18,12 @@ pub enum PriceBettingError {
     Unauthorized,
     #[msg("Only winner can claim")]
     OnlyWinnerCanClaim,
+    #[msg("Resolver Feed does not match")]
+    FeedMismatch,
+    #[msg("Switchbaord: NoValueFound")]
+    NoValueFound,
+    #[msg("Switchbaord: NoFeedData")]
+    NoFeedData,
+    #[msg("Switchbaord: PriceConversionOverflow")]
+    PriceConversionOverflow,
 }

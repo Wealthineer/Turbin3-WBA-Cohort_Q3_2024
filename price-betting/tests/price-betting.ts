@@ -21,6 +21,7 @@ describe("price-betting", () => {
   const pricePrediction = new anchor.BN(1000);
   const amount = new anchor.BN(1 * anchor.web3.LAMPORTS_PER_SOL);
   const fees = 1000;
+  const solUsdPriceFeedDevnet = "GvDMxPzN1sCj7L26YDK2HnMRXEQmQ2aemov8YBtPS7vR";
 
   //Setup keys
   const [admin, betCreator, betTaker] = Array.from({length: 3}, () => Keypair.generate());
@@ -74,7 +75,7 @@ describe("price-betting", () => {
 
     const creatorBalanceBefore = await connection.getBalance(betCreator.publicKey)
 
-    const tx = await program.methods.createBet(betSeed, openUntil, resolveDate, pricePrediction, true, new PublicKey("BSzfJs4d1tAkSDqkepnfzEVcx2WtDVnwwXa2giy9PLeP"), amount).accountsPartial({
+    const tx = await program.methods.createBet(betSeed, openUntil, resolveDate, pricePrediction, true, new PublicKey(solUsdPriceFeedDevnet), amount).accountsPartial({
       betCreator: betCreator.publicKey,
       betProgram: betProgram,
       bet: bet,
@@ -100,7 +101,7 @@ describe("price-betting", () => {
     assert.equal(initializedBet.taker, null)
     assert.equal(initializedBet.pricePrediction.toString(), pricePrediction.toString())
     assert.equal(initializedBet.directionCreator, true)
-    assert.equal(initializedBet.resolverFeed.toBase58(), new PublicKey("BSzfJs4d1tAkSDqkepnfzEVcx2WtDVnwwXa2giy9PLeP").toBase58())
+    assert.equal(initializedBet.resolverFeed.toBase58(), new PublicKey(solUsdPriceFeedDevnet).toBase58())
     assert.equal(initializedBet.betSeed.toString(), betSeed.toString())
   });
 
@@ -139,7 +140,7 @@ describe("price-betting", () => {
   it("Create Bet 2", async () => {
 
     const creatorBalanceBefore = await connection.getBalance(betCreator.publicKey)
-    const tx = await program.methods.createBet(betSeed, openUntil, resolveDate, pricePrediction, true, new PublicKey("BSzfJs4d1tAkSDqkepnfzEVcx2WtDVnwwXa2giy9PLeP"), amount).accountsPartial({
+    const tx = await program.methods.createBet(betSeed, openUntil, resolveDate, pricePrediction, true, new PublicKey(solUsdPriceFeedDevnet), amount).accountsPartial({
       betCreator: betCreator.publicKey,
       betProgram: betProgram,
       bet: bet,
@@ -165,7 +166,7 @@ describe("price-betting", () => {
     assert.equal(initializedBet.taker, null)
     assert.equal(initializedBet.pricePrediction.toString(), pricePrediction.toString())
     assert.equal(initializedBet.directionCreator, true)
-    assert.equal(initializedBet.resolverFeed.toBase58(), new PublicKey("BSzfJs4d1tAkSDqkepnfzEVcx2WtDVnwwXa2giy9PLeP").toBase58())
+    assert.equal(initializedBet.resolverFeed.toBase58(), new PublicKey(solUsdPriceFeedDevnet).toBase58())
     assert.equal(initializedBet.betSeed.toString(), betSeed.toString())
   });
 
@@ -224,11 +225,13 @@ describe("price-betting", () => {
                      
 
   it("Resolve (just dummy impl)", async () => {
-    const tx = await program.methods.resolveBet(betSeed).accountsPartial({
+
+    const tx = await program.methods.resolveBetLocalTestDummy(betSeed).accountsPartial({
       resolver: betCreator.publicKey,
       betCreator: betCreator.publicKey,
       betProgram: betProgram,
       bet: bet,
+      resolverFeed: new PublicKey(solUsdPriceFeedDevnet),
     })
     .signers([betCreator])
     .rpc();
