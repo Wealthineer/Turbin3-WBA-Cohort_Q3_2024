@@ -2,10 +2,20 @@
   "license": "ISC",
   "scripts": {
     "lint:fix": "prettier */*.js \"*/**/*{.js,.ts}\" -w",
-    "lint": "prettier */*.js \"*/**/*{.js,.ts}\" --check"
+    "lint": "prettier */*.js \"*/**/*{.js,.ts}\" --check",
+    "create-bet": "ts-node programs/price-betting/scripts/create-bet.ts",
+    "accept-bet": "ts-node programs/price-betting/scripts/accept-bet.ts",
+    "resolve-bet": "ts-node programs/price-betting/scripts/resolve-bet.ts",
+    "cancel-bet": "ts-node programs/price-betting/scripts/cancel-bet.ts",
+    "claim-bet": "ts-node programs/price-betting/scripts/claim-bet.ts",
+    "claim-treasury": "ts-node programs/price-betting/scripts/claim-treasury.ts",
+    "init-program": "ts-node programs/price-betting/scripts/init-program.ts"
   },
   "dependencies": {
-    "@coral-xyz/anchor": "^0.30.1"
+    "@coral-xyz/anchor": "^0.30.1",
+    "@switchboard-xyz/on-demand": "^1.2.39",
+    "bs58": "^6.0.0",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
     "@types/bn.js": "^5.1.0",

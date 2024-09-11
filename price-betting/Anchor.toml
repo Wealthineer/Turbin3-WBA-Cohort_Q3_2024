@@ -7,11 +7,17 @@ skip-lint = false
 [programs.localnet]
 price_betting = "5RoVruk757C3LWt6ZVXajctxrqTDdGJEEmH1sh5qDTPL"
 
+[programs.devnet]
+price_betting = "5RoVruk757C3LWt6ZVXajctxrqTDdGJEEmH1sh5qDTPL"
+
+[programs.mainnet]
+price_betting = "5RoVruk757C3LWt6ZVXajctxrqTDdGJEEmH1sh5qDTPL"
+
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "Localnet"
+cluster = "devnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
