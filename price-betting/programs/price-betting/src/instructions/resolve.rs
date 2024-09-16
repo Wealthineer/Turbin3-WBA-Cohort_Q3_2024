@@ -39,7 +39,7 @@ impl<'info> Resolve<'info> {
         //Bet must have been accepted
         require!(self.bet.taker.is_some(), PriceBettingError::BetNotAccepted);
         //Resolve date must have been reached
-        require!(self.bet.resolve_date as i64 <= Clock::get()?.unix_timestamp, PriceBettingError::ResolveDateNotReached); //TODO: Why does > or <=work but not <
+        require!(self.bet.resolve_date as i64 <= Clock::get()?.unix_timestamp*1000, PriceBettingError::ResolveDateNotReached); //TODO: Why does > or <=work but not <
         Ok(())
     }
 
@@ -61,8 +61,9 @@ impl<'info> Resolve<'info> {
             Err(_e) => return Err(PriceBettingError::NoFeedData.into()),
         };
 
+        //Expected behavior is to update the price in the tx that calls this ix. Therefore max stale can be low and we only expect 1 sample to be present
         let max_stale_slots = 300; // Define the maximum number of slots before data is considered stale
-        let min_samples = 2; // Set the minimum number of samples for data accuracy
+        let min_samples = 1; // Set the minimum number of samples for data accuracy
         let price: Decimal = match feed.get_value(&Clock::get()?, max_stale_slots, min_samples, true) {
             Ok(price) => price,
             Err(_e) => return Err(PriceBettingError::NoValueFound.into()),

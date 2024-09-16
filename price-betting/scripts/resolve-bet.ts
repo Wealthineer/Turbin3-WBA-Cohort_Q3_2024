@@ -26,20 +26,12 @@ async function main() {
     console.log("Bet Creator", betCreator.publicKey.toBase58());
 
     const connection = new Connection("https://api.devnet.solana.com", 'confirmed');
-
     const provider = new AnchorProvider(connection, new Wallet(admin), { commitment: "confirmed" });
-    
     const program = new Program<PriceBetting>(IDL, provider);
 
     const initSeed = new BN(123);
     const betSeed = new BN(999);
-    const openUntil = new BN(Date.now() + 1000 * 60);
-    const resolveDate = new BN(Date.now() + 1000 * 60 * 3);
-    const pricePrediction = new BN(1000);
-    const amount = new BN(1 * web3.LAMPORTS_PER_SOL);
-    const fees = 1000;
     const bonkUsdSwitchboardFeedDevnet = "2N5FN6TiH6hVroPkt4zoXHPEsDHp6B8cSV38ALnJic46";    
-
 
     const betProgram  = PublicKey.findProgramAddressSync([Buffer.from("program"), admin.publicKey.toBuffer(), initSeed.toArrayLike(Buffer, "le", 8)], program.programId)[0];
     console.log("Bet Program", betProgram.toBase58());
@@ -47,8 +39,6 @@ async function main() {
     console.log("Treasury", treasury.toBase58());
     const bet  = PublicKey.findProgramAddressSync([Buffer.from("bet"), betProgram.toBuffer(), betCreator.publicKey.toBuffer(), betSeed.toArrayLike(Buffer, "le", 8)], program.programId)[0];
     console.log("Bet", bet.toBase58());
-    const bettingPool = PublicKey.findProgramAddressSync([Buffer.from("betting_pool"), bet.toBuffer()], program.programId)[0];
-    console.log("Betting Pool", bettingPool.toBase58());
 
     //@ts-ignore
     const unresolvedBet = await program.account.bet.fetch(bet)
@@ -56,9 +46,7 @@ async function main() {
     console.log("Unresolved Bet: ")
     console.log(unresolvedBet)
 
-
     const feed = new PublicKey(bonkUsdSwitchboardFeedDevnet);
-
     const switchboardProgram = await AnchorUtils.loadProgramFromEnv();
 
     //@ts-ignore
@@ -83,7 +71,7 @@ async function main() {
 
     const tx = await asV0Tx({
         connection,
-        ixs: [pullIx, resolveIx],
+        ixs: [resolveIx], //TODO: Manage to add pullIx here - resolve error that switchboard UI to create feed seems to use different devnet program than the sdk - both program ids exist and got a idl
         signers: [betCreator],
         computeUnitPrice: 200_000,
         computeUnitLimitMultiple: 1.3,
@@ -91,11 +79,11 @@ async function main() {
       });
 
     // simulate the transaction
-    const simulateResult =
-    await connection.simulateTransaction(tx, {
-        commitment: "processed",
-    });
-    console.log(simulateResult);
+    // const simulateResult =
+    // await connection.simulateTransaction(tx, {
+    //     commitment: "processed",
+    // });
+    // console.log(simulateResult);
 
     // Send the transaction via rpc 
     const sig = await connection.sendTransaction(tx);
