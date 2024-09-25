@@ -47,18 +47,28 @@ async function main() {
     console.log(unresolvedBet)
 
     const feed = new PublicKey(bonkUsdSwitchboardFeedDevnet);
-    const switchboardProgram = await AnchorUtils.loadProgramFromEnv();
+
+    const switchboardProgramIdDevnet = new PublicKey("Aio4gaXjXzJNVLtzwtNVmSqGKpANtXhybbkhtAC94ji2");
+
+    const idl = (await Program.fetchIdl(
+      switchboardProgramIdDevnet,
+      provider
+    ))!;
+
+    const switchboardProgram = new Program(idl, provider);
+
+    console.log("Switchboard Program: ", switchboardProgram.programId.toBase58())
 
     //@ts-ignore
     const feedAccount = new PullFeed(switchboardProgram, feed);
     const [pullIx, responses, _ , luts] = await feedAccount.fetchUpdateIx();
 
-    console.log("Responses: ", responses)
-    console.log("Luts: ", luts)
+    // console.log("Responses: ", responses)
+    // console.log("Luts: ", luts)
 
     const lookupTables = await loadLookupTables([...responses.map((x) => x.oracle), feedAccount]);
 
-    console.log("Lookup Tables: ", lookupTables)
+    // console.log("Lookup Tables: ", lookupTables)
 
     //@ts-ignore
     const resolveIx = await program.methods.resolveBetWihtoutUpdate(betSeed).accountsPartial({
@@ -69,7 +79,7 @@ async function main() {
         resolverFeed: new PublicKey(bonkUsdSwitchboardFeedDevnet),
       }).instruction();
 
-      console.log("Pull Ix: ", pullIx) 
+      console.log("Pull Ix pid: ", pullIx.programId.toBase58()) 
 
     const tx = await asV0Tx({
         connection,
