@@ -26,7 +26,7 @@ async function main() {
     console.log("Bet Creator", betCreator.publicKey.toBase58());
 
     const connection = new Connection("https://api.devnet.solana.com", 'confirmed');
-    const provider = new AnchorProvider(connection, new Wallet(admin), { commitment: "confirmed" });
+    const provider = new AnchorProvider(connection, new Wallet(betCreator), { commitment: "confirmed" });
     const program = new Program<PriceBetting>(IDL, provider);
 
     const initSeed = new BN(123);
