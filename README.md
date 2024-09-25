@@ -12,7 +12,7 @@ I will focus on a peer to peer price betting platform.
 User stories:
 - [User stories](./price-betting/docs/user-stories.md)
 - [Architectural diagram](./price-betting/docs/arch-diagram_price-bets.png)
-- [Implementation](./price-betting/README.md)
+- [Implementation](./price-betting/)
 
 
 
