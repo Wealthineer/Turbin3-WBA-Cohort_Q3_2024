@@ -69,9 +69,11 @@ async function main() {
         resolverFeed: new PublicKey(bonkUsdSwitchboardFeedDevnet),
       }).instruction();
 
+      console.log("Pull Ix: ", pullIx) 
+
     const tx = await asV0Tx({
         connection,
-        ixs: [resolveIx], //TODO: Manage to add pullIx here - resolve error that switchboard UI to create feed seems to use different devnet program than the sdk - both program ids exist and got a idl
+        ixs: [pullIx, resolveIx], //TODO: Manage to add pullIx here - resolve error that switchboard UI to create feed seems to use different devnet program than the sdk - both program ids exist and got a idl
         signers: [betCreator],
         computeUnitPrice: 200_000,
         computeUnitLimitMultiple: 1.3,
@@ -79,11 +81,11 @@ async function main() {
       });
 
     // simulate the transaction
-    // const simulateResult =
-    // await connection.simulateTransaction(tx, {
-    //     commitment: "processed",
-    // });
-    // console.log(simulateResult);
+    const simulateResult =
+    await connection.simulateTransaction(tx, {
+        commitment: "processed",
+    });
+    console.log(simulateResult);
 
     // Send the transaction via rpc 
     const sig = await connection.sendTransaction(tx);

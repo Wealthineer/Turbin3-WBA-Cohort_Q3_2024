@@ -455,9 +455,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@switchboard-xyz/on-demand@npm:^1.2.39":
-  version: 1.2.39
-  resolution: "@switchboard-xyz/on-demand@npm:1.2.39"
+"@switchboard-xyz/on-demand@npm:^1.2.41":
+  version: 1.2.41
+  resolution: "@switchboard-xyz/on-demand@npm:1.2.41"
   dependencies:
     "@brokerloop/ttlcache": "npm:^3.2.3"
     "@coral-xyz/anchor-30": "npm:@coral-xyz/anchor@0.30.1"
@@ -469,7 +469,7 @@ __metadata:
     bs58: "npm:^5.0.0"
     js-yaml: "npm:^4.1.0"
     protobufjs: "npm:^7.2.6"
-  checksum: 10c0/230d471b3699f6764485bbf8c9b3d281c5af49eca172df89b0fa14bfb9b0dacc3da4a7206de6ccd90efd20101fb8a726132da6e9bfb02000184cd7189922224c
+  checksum: 10c0/c907a53880afe26e6747b47aa5e13f30e7b6078159749215525453c9e3adae9b053361088cd8ab4829a5ecb4aaf6384874d8fd5e47e775636c4d6ae5fd2800cf
   languageName: node
   linkType: hard
 
@@ -2388,7 +2388,7 @@ __metadata:
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
     "@coral-xyz/anchor": "npm:^0.30.1"
-    "@switchboard-xyz/on-demand": "npm:^1.2.39"
+    "@switchboard-xyz/on-demand": "npm:^1.2.41"
     "@types/bn.js": "npm:^5.1.0"
     "@types/chai": "npm:^4.3.0"
     "@types/mocha": "npm:^9.0.0"

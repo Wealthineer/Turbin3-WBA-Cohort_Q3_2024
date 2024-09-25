@@ -18,8 +18,8 @@ async function main() {
 
     const initSeed = new BN(123);
     const betSeed = new BN(999);
-    const openUntil = new BN(Date.now() + 1000 * 60);
-    const resolveDate = new BN(Date.now() + 1000 * 60 * 3);
+    const openUntil = new BN(Date.now() + 1000 * 60); //Bet is open for 1 minute to be accepted
+    const resolveDate = new BN(Date.now() + 1000 * 90); //Bet can be resolved after 90 seconds
     const pricePrediction = new BN(1000);
     const amount = new BN(1 * web3.LAMPORTS_PER_SOL);
     const bonkUsdSwitchboardFeedDevnet = "2N5FN6TiH6hVroPkt4zoXHPEsDHp6B8cSV38ALnJic46";    
