@@ -12,6 +12,8 @@ The program currently contains the method `resolve_bet_local_test_dummy` which i
 
 ## Deploying the program
 
+First make sure that the cluster in `Anchor.toml` is set to `devnet`.
+
 If a new instance of the program is required, the following commands should be run:
 ```bash
 anchor build
@@ -22,6 +24,7 @@ Make sure to update the program id where necessary in this case.
 ## Running the scripts
 
 ### Preparation
+First make sure that the cluster in `Anchor.toml` is set to `devnet`. On localnet the switchboard program is not available.
 
 Make sure to add admin.json, maker.json and taker.json to the /scripts/wallets folder. Those are wallets in byte array format. The wallets need to be prefunded on devnet. The scripts only work fully on devnet, not localnet, since switchboard is not present on localnet.
 
@@ -76,4 +79,9 @@ If the casino's treasury is not empty, the treasury can be claimed by the admin.
 yarn claim-treasury
 ```
 
-
+## Running unit tests
+Make sure that the cluster in `Anchor.toml` is set to `localnet`.
+```bash
+anchor test
+```
+The tests go through all the program methods. The resolve step however uses the mock implementation that needs to be removed in the future to go over this step without the not available switchboard program and to enable the ability to test claiming of the winnings that can only be done after the resolve step.
