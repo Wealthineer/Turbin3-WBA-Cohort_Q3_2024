@@ -3,13 +3,13 @@
   "scripts": {
     "lint:fix": "prettier */*.js \"*/**/*{.js,.ts}\" -w",
     "lint": "prettier */*.js \"*/**/*{.js,.ts}\" --check",
-    "create-bet": "ts-node scripts/create-bet.ts",
-    "accept-bet": "ts-node scripts/accept-bet.ts",
-    "resolve-bet": "ts-node scripts/resolve-bet.ts",
-    "cancel-bet": "ts-node scripts/cancel-bet.ts",
-    "claim-bet": "ts-node scripts/claim-bet.ts",
-    "claim-treasury": "ts-node scripts/claim-treasury.ts",
-    "init-program": "ts-node scripts/init-program.ts"
+    "create-bet": "ts-node scripts/01-create-bet.ts",
+    "accept-bet": "ts-node scripts/02-accept-bet.ts",
+    "resolve-bet": "ts-node scripts/04-resolve-bet.ts",
+    "cancel-bet": "ts-node scripts/03-cancel-bet.ts",
+    "claim-bet": "ts-node scripts/05-claim-bet.ts",
+    "claim-treasury": "ts-node scripts/06-claim-treasury.ts",
+    "init-program": "ts-node scripts/00-init-program.ts"
   },
   "dependencies": {
     "@coral-xyz/anchor": "^0.30.1",

@@ -17,7 +17,7 @@ price_betting = "5RoVruk757C3LWt6ZVXajctxrqTDdGJEEmH1sh5qDTPL"
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "devnet"
+cluster = "localnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
