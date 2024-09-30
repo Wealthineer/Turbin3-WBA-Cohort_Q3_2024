@@ -13,7 +13,7 @@ User stories:
 - [User stories](./price-betting/docs/user-stories.md)
 - [Architectural diagram](./price-betting/docs/arch-diagram_price-bets.png)
 - [Implementation](./price-betting/)
-- [Pitchdeck](./price-betting/docs/pitchdeck.pdf)
+- [Pitchdeck](./price-betting/docs/Pitchdeck.pdf)
 
 
 ## Project Folders
